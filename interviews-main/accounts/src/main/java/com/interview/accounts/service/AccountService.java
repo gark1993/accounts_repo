@@ -4,6 +4,7 @@ import com.interview.accounts.mapper.AccountsMapper;
 import com.interview.accounts.model.GetAccountsResponseBody;
 import com.interview.accounts.repo.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.interview.accounts.domain.*;
 
-@RequiredArgsConstructor
+@Slf4j
 @Service
 public class AccountService {
 
@@ -23,17 +24,19 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     public GetAccountsResponseBody getAccounts() {
-
+    	log.debug("Calling AccountService getAccounts():::::>");
         return new GetAccountsResponseBody(accountRepository.count(),AccountsMapper.map(accountRepository.findAll()));
     }
     
     public List<Account> getAllAccountsPageable(int page, int size) {
+    	log.debug("Calling AccountService getAllAccountsPageable():::::>");
         Pageable pageable = PageRequest.of(page, size);
         Page<Account> paginationRecords = accountRepository.findAll(pageable);   
         return paginationRecords.getContent();
     }
     
     public List<Account> filterAccounts(Integer accountNumber, String accountName) {
+    	log.debug("Calling AccountService filterAccounts():::::>");
         if (accountNumber !=null && accountName != null) {
             return accountRepository.findByNumberOrName(accountNumber, accountName);
         } else if (accountNumber != null) {
@@ -46,10 +49,12 @@ public class AccountService {
     }
     
     public Account createAccount(Account account) {
+    	log.debug("Calling AccountService createAccount():::::>");
         return accountRepository.save(account);
     }
     
     public Account updateAccount(Integer id, Account updatedAccount) {
+    	log.debug("Calling AccountService updateAccount():::::>");
         Optional<Account> optionalAccount = accountRepository.findById(id);
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();

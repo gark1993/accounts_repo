@@ -2,6 +2,8 @@ package com.interview.accounts.controller;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.interview.accounts.model.LoginRequest;
@@ -13,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class UserController {
 
@@ -23,6 +26,7 @@ public class UserController {
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody LoginRequest loginRequest) {
+    	log.debug("Calling UserController login():::::>");
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
 

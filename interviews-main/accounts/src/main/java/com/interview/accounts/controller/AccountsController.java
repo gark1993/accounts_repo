@@ -3,6 +3,8 @@ package com.interview.accounts.controller;
 import com.interview.accounts.model.GetAccountsResponseBody;
 import com.interview.accounts.service.AccountService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.interview.accounts.domain.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/accounts")
 public class AccountsController {
@@ -29,13 +32,15 @@ public class AccountsController {
 
     @GetMapping(value = "/all-accounts")
     public ResponseEntity<GetAccountsResponseBody> getAllAccounts() {
+    	log.debug("Calling AccountsController getAllAccounts():::::>");
         return ResponseEntity.ok(accountService.getAccounts());
     }
     
     
 	@GetMapping
-	public ResponseEntity<List<Account>> getAccounts(@RequestParam(name = "page") int page,
+	public ResponseEntity<List<Account>> getAccountsPageable(@RequestParam(name = "page") int page,
 			@RequestParam(name = "size") int size) {
+		log.debug("Calling AccountsController getAccounts():::::>");
 		List<Account> pagedAccounts = accountService.getAllAccountsPageable(page, size);
 
 		if (pagedAccounts.isEmpty()) {
@@ -51,6 +56,7 @@ public class AccountsController {
             @RequestParam(required = false) Integer accountNumber,
             @RequestParam(required = false) String accountName
     ) {
+		log.debug("Calling AccountsController filterAccounts():::::>");
         List<Account> filteredAccounts = accountService.filterAccounts(accountNumber, accountName);
 
         if (filteredAccounts.isEmpty()) {
@@ -62,13 +68,15 @@ public class AccountsController {
 	
 	@PostMapping
     public ResponseEntity<Account> createAccount(@RequestBody Account newAccount) {
+		log.debug("Calling AccountsController createAccount():::::>");
         Account createdAccount = accountService.createAccount(newAccount);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAccount);
     }
 	
 	@PutMapping("/{id}")
     public ResponseEntity<Account> updateAccount(@PathVariable Integer id, @RequestBody Account updatedAccount) {
-        Account account = accountService.updateAccount(id, updatedAccount);
+		log.debug("Calling AccountsController updateAccount():::::>");
+		Account account = accountService.updateAccount(id, updatedAccount);
         if (account == null) {
             return ResponseEntity.notFound().build();
         }
