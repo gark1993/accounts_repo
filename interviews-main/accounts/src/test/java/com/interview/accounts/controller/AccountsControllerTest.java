@@ -27,7 +27,7 @@ import com.interview.accounts.model.AccountDTO;
 import com.interview.accounts.model.GetAccountsResponseBody;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class AccountsControllerTest {
 
 	@InjectMocks
